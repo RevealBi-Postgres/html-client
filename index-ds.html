@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Sdk - Create New Dashboard</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
+
+    <select name="customers" id="customerId">
+        <option value="ALFKI" selected>ALFKI</option>
+        <option value="BLONP">BLONP</option>
+        <option value="AROUT">AROUT</option>
+        <option value="QUICK">QUICK</option>
+        <option value="HUNGO">HUNGO</option>
+    </select>
+    <p></p>
+
+    <div id="viewer" style="height: calc(100vh - 60px); width: 100%;"></div>
+
+    <script type="text/javascript">
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");     
+        var revealView = new $.ig.RevealView("#viewer");
+        revealView.interactiveFilteringEnabled = true;
+        revealView.startInEditMode = true;    
+        
+        $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+            return headers;
+        });
+
+        const headers = {};
+
+        revealView.onDataSourcesRequested = (callback) => {                
+            var selectedCustomerId = $('#customerId').val();
+            headers["x-header-one"] = selectedCustomerId;
+
+            var pgDataSource = new $.ig.RVPostgresDataSource();
+            pgDataSource.id="postgresServer";
+            pgDataSource.title = "Postgres Server Data Source";
+            pgDataSource.subtitle = "Full Northwind Database";
+
+            callback(new $.ig.RevealDataSources([pgDataSource], [], false));
+        };
+    </script>
+</body>
+</html>

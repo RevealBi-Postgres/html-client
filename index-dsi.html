@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Sdk - Create New Dashboard</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
+
+    <select name="customers" id="customerId">
+        <option value="ALFKI" selected>ALFKI</option>
+        <option value="BLONP">BLONP</option>
+        <option value="AROUT">AROUT</option>
+        <option value="QUICK">QUICK</option>
+        <option value="HUNGO">HUNGO</option>
+    </select>
+    <select name="orders" id="orderId">
+        <option value="10248" selected>10248</option>
+        <option value="10249">10249</option>
+        <option value="10250">10250</option>
+        <option value="10251">10251</option>
+        <option value="10252">10252</option>
+        <option value="10253">10253</option>
+        <option value="10254">10254</option>
+        <option value="10255">10255</option>
+    </select>
+    <p></p>
+
+    <div id="viewer" style="height: calc(100vh - 60px); width: 100%;"></div>
+
+    <script type="text/javascript">
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");
+
+        $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+            return headers;
+        });
+
+        const headers = {};
+     
+        var revealView = new $.ig.RevealView("#viewer");
+        revealView.interactiveFilteringEnabled = true;
+        revealView.startInEditMode = true;    
+        
+        revealView.onDataSourcesRequested = (callback) => {                    
+            var selectedCustomerId = $('#customerId').val();
+            headers["x-header-one"] = selectedCustomerId;
+
+            var selectedOrderId = $('#orderId').val();
+            headers["x-header-two"] = selectedOrderId;
+            
+            var pgDataSource = new $.ig.RVPostgresDataSource();
+            pgDataSource.id="postgresServer";
+            pgDataSource.title = "Postgres Server Data Source";
+            pgDataSource.subtitle = "Full Northwind Database";
+
+            var dsi1 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
+            dsi1.id="CustOrderHist";
+            dsi1.title = "Customer Orders History Stored Proc";
+            dsi1.subtitle = "CustomerId Parameter";
+
+            var dsi2 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
+            dsi2.id="CustOrdersDates";
+            dsi2.title = "Customer Orders Stored Proc";
+            dsi2.subtitle = "CustomerId Parameter";
+
+            var dsi3 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
+            dsi3.id="TenMostExpensiveProducts";
+            dsi3.title = "Ten Most Expensive Products";
+            dsi3.subtitle = "Stored Procedure";  
+            
+            var dsi4 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
+            dsi4.id="CustomerOrders";
+            dsi4.title = "Customer Orders";
+            dsi4.subtitle = "OrderId Parameter";
+
+            callback(new $.ig.RevealDataSources([pgDataSource], [dsi1, dsi2, dsi3, dsi4], false));
+           };
+    </script>
+</body>
+
+</html>
