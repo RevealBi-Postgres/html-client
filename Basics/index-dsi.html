@@ -34,7 +34,8 @@
     <div id="viewer" style="height: calc(100vh - 60px); width: 100%;"></div>
 
     <script type="text/javascript">
-        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");
+       // $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/reveal-api/");
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/reveal-api/");     
 
         $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
             return headers;
@@ -50,17 +51,22 @@
             var selectedCustomerId = $('#customerId').val();
             headers["x-header-one"] = selectedCustomerId;
 
-            var selectedOrderId = $('#orderId').val();
-            headers["x-header-two"] = selectedOrderId;
+            // var selectedOrderId = $('#orderId').val();
+            // headers["x-header-two"] = selectedOrderId;
             
             var pgDataSource = new $.ig.RVPostgresDataSource();
             pgDataSource.id="postgresServer";
             pgDataSource.title = "Postgres Server Data Source";
             pgDataSource.subtitle = "Full Northwind Database";
 
+            var dsi4 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
+            dsi4.id="CustomerOrders";
+            dsi4.title = "Customer Orders";
+            dsi4.subtitle = "OrdersQry CustomQuery";
+
             var dsi1 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
             dsi1.id="CustOrderHist";
-            dsi1.title = "Customer Orders History Stored Proc";
+            dsi1.title = "Customer Custom Query";
             dsi1.subtitle = "CustomerId Parameter";
 
             var dsi2 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
@@ -69,14 +75,11 @@
             dsi2.subtitle = "CustomerId Parameter";
 
             var dsi3 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
-            dsi3.id="TenMostExpensiveProducts";
-            dsi3.title = "Ten Most Expensive Products";
-            dsi3.subtitle = "Stored Procedure";  
+            dsi3.id="Invoices";
+            dsi3.title = "All Invoices";
+            dsi3.subtitle = "Custom Query on View";  
             
-            var dsi4 = new $.ig.RVPostgresDataSourceItem(pgDataSource);
-            dsi4.id="CustomerOrders";
-            dsi4.title = "Customer Orders";
-            dsi4.subtitle = "OrderId Parameter";
+
 
             callback(new $.ig.RevealDataSources([pgDataSource], [dsi1, dsi2, dsi3, dsi4], false));
            };

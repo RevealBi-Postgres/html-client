@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reveal Sdk - Load Dashboard</title>
+
+  <!-- Some fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Arial:wght@400;500;600;700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:wght@400;500;600;700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Questrial:wght@400;500;600;700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@400;500;600;700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;500;600;700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Titillium Web:wght@400;500;600;700" rel="stylesheet" />
+
+  <!-- Simple CSS for a nicer looking dropdown -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Modern style for the select */
+    #themeSelect {
+      appearance: none; /* Remove default arrow on some browsers */
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    #themeSelect:focus {
+      outline: none;
+      border-color: #7aa9f8;
+      box-shadow: 0 0 4px rgba(122, 169, 248, 0.5);
+    }
+
+    /* Optional: custom arrow using a pseudo-element */
+    #themeSelect {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='none' height='24' stroke='gray' stroke-width='2' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 10px) center;
+      background-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- THEME SELECT DROPDOWN -->
+  <select id="themeSelect">
+    <option value="default" selected>Default Theme</option>
+    <option value="brown">Brown</option>
+    <option value="red">Red</option>
+    <option value="purple">Purple</option>
+    <option value="blue">Blue</option>
+    <option value="yellow">Yellow</option>
+    <option value="Ocean Light">Ocean Light</option>
+    <option value="Ocean Dark">Ocean Dark</option>
+    <option value="Mountain Light">Mountain Light</option>
+    <option value="Mountain Dark">Mountain Dark</option>
+  </select>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+  <script>window.revealDisableKeyboardManagement = true;</script>
+  <script src="https://dl.revealbi.io/reveal/libs/1.7.2/infragistics.reveal.js"></script>
+
+  <script type="text/javascript">
+    // --- 1) Create a function for the default theme using existing settings ---
+    function applyDefaultTheme() {
+      // Clone the current theme
+      let theme = new $.ig.MountainLightTheme();
+      theme = $.ig.RevealSdkSettings.theme.clone();
+
+      // ACME Analytics Colors (from your existing base code)
+      theme.chartColors = [
+          "#73C2FB", "#2980B9", "#136296",
+          "#FECB49", "#FD9A30", "#EC6F24",
+          "#51AE5A", "#318A3A", "#574E4E",
+          "#3B3636"
+      ];
+
+      // Fonts
+      theme.boldFont = "Arial";
+      theme.regularFont = "Arial";
+      theme.mediumFont = "Arial";
+
+      // Margins / corners
+      theme.useRoundedCorners = false;
+      theme.visualizationMargin = 10;
+
+      // Assign it back
+      $.ig.RevealSdkSettings.theme = theme;
+    }
+
+    // Set up the base URL
+    $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/reveal-api/");
+
+    // Initially, use our "default" theme right when the page loads
+    applyDefaultTheme();
+
+    // Load the dashboard
+    let revealView;
+    $.ig.RVDashboard.loadDashboard("Marketing").then((dashboard) => {
+      revealView = new $.ig.RevealView("#revealView");
+      revealView.dashboard = dashboard;
+    });
+
+    // --- 2) Function to apply color themes ---
+    function updateTheme(color) {
+      if (color === "default") {
+        applyDefaultTheme();
+        return;
+      }
+
+      if (color === "Mountain Light") {
+        theme = new $.ig.MountainLightTheme();
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "Ocean Light") {
+        theme = new $.ig.OceanLightTheme();
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "Mountain Dark") {
+        theme = new $.ig.MountainDarkTheme();
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "Ocean Dark") {
+        theme = new $.ig.OceanDarkTheme();
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "brown") {
+        const theme = new $.ig.RevealTheme();
+        theme.regularFont = "Inter";
+        theme.mediumFont = "Inter";
+        theme.boldFont = "Inter";
+        theme.accentColor = "#FFB500";
+        theme.chartColors = [
+          "#FFB500",
+          "#F06800",
+          "#66411A",
+          "#64A70B",
+          "#0A8080",
+          "#1D487E"
+        ];
+        theme.isDark = theme.fontColor !== "black";
+        theme.useRoundedCorners = true;
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "red") {
+        const theme = new $.ig.RevealTheme();
+        theme.regularFont = "Questrial";
+        theme.mediumFont = "Questrial";
+        theme.boldFont = "Questrial";
+        theme.accentColor = "#AA375E";
+        theme.chartColors = [
+          "#AA375E",
+          "#E87327",
+          "#5C34A4",
+          "#19947C",
+          "#19947C",
+          "#3D3748"
+        ];
+        theme.isDark = theme.fontColor !== "black";
+        theme.useRoundedCorners = true;
+        theme.visualizationMargin = 10;
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "purple") {
+        const theme = new $.ig.RevealTheme();
+        theme.regularFont = "Titillium Web";
+        theme.mediumFont = "Titillium Web";
+        theme.boldFont = "Titillium Web";
+        theme.accentColor = "#0489E0";
+        theme.chartColors = [
+          "#8345A1",
+          "#A165BD",
+          "#89C00C",
+          "#AFF019",
+          "#0F72C2",
+          "#2192ED"
+        ];
+        theme.isDark = theme.fontColor !== "black";
+        theme.useRoundedCorners = true;
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "blue") {
+        const theme = new $.ig.RevealTheme();
+        theme.regularFont = "Montserrat";
+        theme.mediumFont = "Montserrat";
+        theme.boldFont = "Montserrat";
+        theme.accentColor = "#0489E0";
+        theme.chartColors = [
+          "#40578C",
+          "#304169",
+          "#EA3421",
+          "#BA2212",
+          "#823AF7",
+          "#5A09DD"
+        ];
+        theme.isDark = theme.fontColor !== "black";
+        theme.useRoundedCorners = true;
+        theme.visualizationMargin = 15;
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+
+      if (color === "yellow") {
+        const theme = new $.ig.RevealTheme();
+        theme.regularFont = "Lato";
+        theme.mediumFont = "Lato";
+        theme.boldFont = "Lato";
+        theme.accentColor = "#032FA9";
+        theme.chartColors = [
+          "#DEFF4D",
+          "#C6B9FB",
+          "#FC5262",
+          "#FED841",
+          "#0C62FB",
+          "#032FA9"
+        ];
+        theme.fontColor = "white";
+        theme.isDark = theme.fontColor !== "black";
+        theme.dashboardBackgroundColor = "#101C3F";
+        theme.visualizationBackgroundColor = "#000A25";
+        theme.useRoundedCorners = true;
+        theme.visualizationMargin = 8;
+        $.ig.RevealSdkSettings.theme = theme;
+      }
+    }
+
+    // --- 3) Hook up the change event to call updateTheme & refresh revealView ---
+    document.getElementById("themeSelect").addEventListener("change", function (e) {
+      updateTheme(e.target.value);
+      if (revealView) {
+        revealView.refreshTheme();
+      }
+    });
+  </script>
+
+  <div id="revealView" style="height: calc(100vh - 65px); width: 100%;"></div>
+</body>
+</html>

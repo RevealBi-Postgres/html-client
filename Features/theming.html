@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Sdk - Load Dashboard</title>      
+</head>
+
+<body>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Arial:wght@400;500;600;700" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js" ></script>    
+    <script>window.revealDisableKeyboardManagement = true;</script>   
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.2/infragistics.reveal.js"></script>
+
+
+    <script type="text/javascript">
+           // $.ig.RevealSdkSettings.setBaseUrl('https://samples.revealbi.io/upmedia-backend/reveal-api/');
+            $.ig.RevealSdkSettings.setBaseUrl('http://localhost:5111/reveal-api/');
+
+            
+            // Clone existing Theme
+             var theme = $.ig.RevealSdkSettings.theme.clone();
+
+            // Margins / Corners
+            // theme.useRoundedCorners = 
+            // theme.visualizationMargin = 
+            
+            // Colors
+            //theme.accentColor = 
+            //theme.backgroundColors =             
+            //theme.fontColor = 
+            //theme.highlightColor = 
+            //theme.dashboardBackgroundColor =  
+            //theme.visualizationBackgroundColor =  
+
+            // Chart Colors
+            //theme.chartColors = ["rgb(192, 80, 77)", "rgb(101, 197, 235)", "rgb(232, 77, 137)"]; 
+
+            // Font
+            // theme.boldFont = 
+            // theme.mediumFont = 
+            // theme.regularFont =  
+
+
+            // ACME Analytics Colors
+            theme.chartColors = ["#73C2FB", "#2980B9", "#136296", "#FECB49", "#FD9A30", "#EC6F24", "#51AE5A", "#318A3A", "#574E4E", "#3B3636"];
+
+            // Font
+            //var theme = $.ig.RevealSdkSettings.theme.clone();
+            theme.boldFont = "Arial";
+            theme.regularFont = "Arial";
+            theme.mediumFont = "Arial";
+           // $.ig.RevealSdkSettings.theme = theme;
+
+
+            // Margins / Corners
+             theme.useRoundedCorners = false;
+             theme.visualizationMargin = 10;
+
+            // Colors
+            //  theme.accentColor = "#51AE5A"; // light green
+            //  theme.fontColor = "#FFFFFF"; // White
+            //  theme.dashboardBackgroundColor =  "#000000"; // Black
+            //  theme.visualizationBackgroundColor =  "#202020"; // Charcoal
+
+
+            // var theme = new $.ig.MountainLightTheme();
+            // var theme = new $.ig.MountainDarkTheme();
+            // var theme = new $.ig.OceanLightTheme();
+            //  var theme = new $.ig.OceanDarkTheme();
+
+
+            $.ig.RevealSdkSettings.theme = theme;
+     
+            // Load the dashboard
+            $.ig.RVDashboard.loadDashboard("Marketing").then(dashboard => {    
+            var revealView = new $.ig.RevealView("#revealView");
+            revealView.dashboard = dashboard;
+        });
+    </script>
+    <div id="revealView" style="height: calc(100vh - 25px); width: 100%;"></div>
+</body>
+
+</html>

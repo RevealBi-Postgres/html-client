@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Sdk - Web Component</title>
+    
+
+    <style>
+        .revealView {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="revealView" class="revealView"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.2/infragistics.reveal.js"></script>
+
+    <script type="text/javascript">
+        //set this to your server url
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");
+
+        $.ig.RVDashboard.loadDashboard("Sales2").then(dashboard => {
+            let revealView = new $.ig.RevealView("#revealView");
+            revealView.dashboard = dashboard;
+
+
+            revealView.onDataSourcesRequested = (callback) => {
+            
+            var webResourceImage = new $.ig.RVWebResourceDataSource();
+            webResourceImage.id = "image";
+            webResourceImage.title = "Image";
+            webResourceImage.url = "https://apod.nasa.gov/apod/image/2501/HubblesVariablecopy.jpg";
+            webResourceImage.useAnonymousAuthentication = true;
+
+            var webResourceImageItem = new $.ig.RVWebResourceDataSourceItem(webResourceImage);
+            webResourceImageItem.id = "ImageItem";
+            webResourceImageItem.title = "Image Item";
+
+            callback(new $.ig.RevealDataSources([webResourceImage], [], true));
+        };
+
+
+            revealView.onSave = (rv, args) => {
+		    console.log("I am saving");
+                if (args.saveAs) {
+                    var newName = prompt("Please enter the dashboard name");
+                    isDuplicateName(newName).then(isDuplicate => {
+                        if (isDuplicate === "true") {
+                            if (!window.confirm("A dashboard with name: " + newName + " already exists. Do you want to override it?")) {
+                                return;
+                            }
+                        }
+
+                        args.dashboardId = args.name = newName;
+                        args.saveFinished();
+                    });
+
+                }
+                else {
+                    args.saveFinished();
+                }
+            }
+        });
+
+
+        function isDuplicateName(name) {
+            return fetch(`http://localhost:5111/isduplicatename/${name}`).then(resp => resp.text());
+        }
+
+    </script>
+</body>
+
+</html>
