@@ -35,7 +35,8 @@
 
         const headers = {};
 
-        revealView.onDataSourcesRequested = (callback) => {                
+        revealView.onDataSourcesRequested = (callback) => {   
+                         
             var selectedCustomerId = $('#customerId').val();
             headers["x-header-one"] = selectedCustomerId;
 
