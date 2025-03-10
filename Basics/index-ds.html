@@ -10,7 +10,7 @@
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-    <script src="https://dl.revealbi.io/reveal/libs/1.7.2/infragistics.reveal.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.3/infragistics.reveal.js"></script>
 
     <select name="customers" id="customerId">
         <option value="ALFKI" selected>ALFKI</option>
@@ -24,7 +24,9 @@
     <div id="viewer" style="height: calc(100vh - 60px); width: 100%;"></div>
 
     <script type="text/javascript">
-        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/reveal-api/");     
+        // $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/reveal-api/");    
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");     
+ 
         var revealView = new $.ig.RevealView("#viewer");
         revealView.interactiveFilteringEnabled = true;
         revealView.startInEditMode = true;    
