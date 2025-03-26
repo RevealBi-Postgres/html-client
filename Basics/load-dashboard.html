@@ -18,7 +18,7 @@
         $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");
 
         $.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;  
-        $.ig.RVDashboard.loadDashboard("MySales").then(dashboard => { 
+        $.ig.RVDashboard.loadDashboard("Sales").then(dashboard => { 
             var revealView = new $.ig.RevealView("#viewer");
             revealView.interactiveFilteringEnabled = true;
             revealView.dashboard = dashboard;
